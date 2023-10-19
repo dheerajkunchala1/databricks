@@ -1,0 +1,18 @@
+name: CD for my pipeline :)
+
+on: 
+  push:
+    branches: [ main ]
+  
+  workflow_dispatch:
+
+jobs:
+  deploy_code:
+    name: Deploy my Great Databricks Pipeline to production
+    uses: .github/workflows/reusable_databricks_code_deployment.yml
+    with:
+      databricks_code_path: "Pipelines/prod/my_great_pipeline"
+      service_code_file: "notebook/testing_ci_notebooks2.py"
+    secrets:
+      DATABRICKS_HOST_URL: ${{ secrets.DATABRICKS_URL }}
+      DATABRICKS_TOKEN: ${{ secrets.DATABRICKS_TOKEN }}
