@@ -9,7 +9,7 @@ on:
 jobs:
   deploy_code:
     name: Deploy my Great Databricks Pipeline to production
-    uses: .github/workflows/reusable_databricks_code_deployment.yml
+    uses: .github/workflows/reusable_databricks_code_deployment.yml@main
     with:
       databricks_code_path: "Pipelines/prod/my_great_pipeline"
       service_code_file: "notebook/testing_ci_notebooks2.py"
