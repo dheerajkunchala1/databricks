@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Import Directory to Databricks
-        uses: dheerajkunchala1/databricks@v1
+        uses: dheerajkunchala1/databricks
         with:
           databricks-url: ${{ secrets.DATABRICKS_URL }}
           databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
