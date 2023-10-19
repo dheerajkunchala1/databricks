@@ -1,0 +1,22 @@
+name: Databricks Import Directory
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow when changes are pushed to the 'main' branch
+
+jobs:
+  import_to_databricks:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Import Directory to Databricks
+        uses: dheerajkunchala1/databricks@v1
+        with:
+          databricks-url: ${{ secrets.DATABRICKS_URL }}
+          databricks-token: ${{ secrets.DATABRICKS_TOKEN }}
+          local-path: /databricks/notebook/
+          databricks-path: /Workspace/Shared/notebooks
