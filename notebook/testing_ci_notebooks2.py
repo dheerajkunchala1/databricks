@@ -12,3 +12,7 @@ print(12+12)
 # COMMAND ----------
 
 print(24+24)
+
+# COMMAND ----------
+
+print(48+48)
