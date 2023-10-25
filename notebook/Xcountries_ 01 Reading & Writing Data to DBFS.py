@@ -3,11 +3,6 @@ dbutils.fs.ls("/FileStore/tables/countries")
 
 # COMMAND ----------
 
-# MAGIC %fs 
-# MAGIC rm -r dbfs:/FileStore/tables/countries
-
-# COMMAND ----------
-
 dbutils.fs.ls("/FileStore/tables/countries")
 
 # COMMAND ----------
