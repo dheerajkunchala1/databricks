@@ -114,3 +114,109 @@ while True:
             last_checkpoint_offset = offset
             update_checkpoint(last_checkpoint_offset)  # Your implementation
 
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC In PySpark, you can perform various types of joins to combine data from two or more DataFrames. The most common types of joins are:
+# MAGIC
+# MAGIC Inner Join (join or inner)
+# MAGIC
+# MAGIC An inner join returns only the rows for which there is a match in both DataFrames. Rows that don't have a matching key in both DataFrames are excluded.
+# MAGIC Example: df1.join(df2, "key_column", "inner")
+# MAGIC Left Join (left or left_outer)
+# MAGIC
+# MAGIC A left join returns all the rows from the left DataFrame and the matching rows from the right DataFrame. If there is no match in the right DataFrame, null values are included.
+# MAGIC Example: df1.join(df2, "key_column", "left")
+# MAGIC Right Join (right or right_outer)
+# MAGIC
+# MAGIC A right join returns all the rows from the right DataFrame and the matching rows from the left DataFrame. If there is no match in the left DataFrame, null values are included.
+# MAGIC Example: df1.join(df2, "key_column", "right")
+# MAGIC Full Outer Join (outer or full)
+# MAGIC
+# MAGIC A full outer join returns all the rows when there is a match in either the left or right DataFrame. If there is no match in one of the DataFrames, null values are included.
+# MAGIC Example: df1.join(df2, "key_column", "outer")
+# MAGIC Left Semi Join (left_semi)
+# MAGIC
+# MAGIC A left semi join returns all the rows from the left DataFrame for which there is a match in the right DataFrame. It includes only the columns from the left DataFrame.
+# MAGIC Example: df1.join(df2, "key_column", "left_semi")
+# MAGIC Left Anti Join (left_anti)
+# MAGIC
+# MAGIC A left anti join returns all the rows from the left DataFrame for which there is no match in the right DataFrame. It includes only the columns from the left DataFrame.
+# MAGIC Example: df1.join(df2, "key_column", "left_anti")
+# MAGIC Cross Join (cross)
+# MAGIC
+# MAGIC A cross join returns the Cartesian product of rows from both DataFrames, resulting in a large combined DataFrame. It does not require a specific key column.
+# MAGIC Example: df1.crossJoin(df2)
+# MAGIC Self Join
+# MAGIC
+# MAGIC A self-join is used when you want to join a DataFrame with itself, typically using different aliases to distinguish between the two instances of the same DataFrame.
+# MAGIC Here's an example of how to use a join in PySpark:
+
+# COMMAND ----------
+
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder.appName("JoinExample").getOrCreate()
+
+# Join two DataFrames (df1 and df2) using an inner join on a common key column
+result = df1.join(df2, "key_column", "inner")
+
+result.show()
+
+
+# COMMAND ----------
+
+To use python functions in SQL statement you need to register it
+
+# COMMAND ----------
+
+spark.udf.register("multiple_cols",multiply_cols)
+
+# COMMAND ----------
+
+# MAGIC %md
+# MAGIC # PYTHON UDFs
+
+# COMMAND ----------
+
+from pyspark.sql.functions import udf,length
+from pyspark.sql.types import *
+
+# COMMAND ----------
+
+def count_chars(col):
+    return length(col)
+
+# COMMAND ----------
+
+def count_chars_python(col):
+    return len(col)
+
+# COMMAND ----------
+
+df = spark.read.format('delta').load('dbfs:/user/hive/warehouse/delta_lake_db.db/countries_managed_delta')
+
+# COMMAND ----------
+
+df.withColumn('Country_name_length',count_chars(df.NAME)).display()
+
+# COMMAND ----------
+
+df.withColumn('Country_name_length',count_chars_python(df.NAME)).display()
+
+# COMMAND ----------
+
+from pyspark.sql.functions import udf
+
+# COMMAND ----------
+
+count_chars_python = udf(count_chars_python)
+
+# COMMAND ----------
+
+df.withColumn('Country_name_length',count_chars_python(df.NAME)).display()
+
+# COMMAND ----------
+
+
